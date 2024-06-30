@@ -1,9 +1,11 @@
 mod database;
-
-
+mod wallet;
+mod block;
+mod transaction;
 
 
 use clap::Parser;
+use wallet::{WalletCmd, WalletSubCommand, handle_wallet_cmd};
 #[derive(Parser, Debug)]
 #[command(version, about, long_about=None)]
 struct Cli {
@@ -21,7 +23,6 @@ enum Commands {
     Miner(MinerCmd),
     /// Node Operations
     Node(NodeCmd),
-    /// Wallet Operations
     Wallet(WalletCmd),
 }
 
@@ -56,25 +57,6 @@ enum NodeSubCommand {
     Start,
 
     Add,
-}
-
-#[derive(Parser, Debug)]
-struct WalletCmd {
-    name: String,
-    #[clap(subcommand)]
-    subcmd: WalletSubCommand,
-}
-
-#[derive(Parser, Debug)]
-enum WalletSubCommand {
-    /// Generate a new wallet
-    New,
-    /// Show the balance of the current wallet
-    Balance,
-    /// Show the address of the current wallet
-    Address,
-    /// Send coins to an address
-    Send(SendCmd),
 }
 
 #[derive(Parser, Debug)]
@@ -114,24 +96,7 @@ fn main() {
                 // Implement logic for 'node add' command here
             }
         },
-        Commands::Wallet(cmd) => match cmd.subcmd {
-            WalletSubCommand::New => {
-                println!("name: {}, subcmd: {:?}", cmd.name, cmd.subcmd);
-                println!("Generating new wallet with name: {}", cmd.name);
-                // Implement logic for 'wallet new' command here
-            }
-            WalletSubCommand::Balance => {
-                println!("Getting balance for current wallet");
-                // Implement logic for 'wallet balance' command here
-            }
-            WalletSubCommand::Address => {
-                println!("Getting address for current wallet");
-                // Implement logic for 'wallet address' command here
-            }
-            WalletSubCommand::Send(subcmd) => {
-                println!("Sending {} from wallet {} to address {}", subcmd.amount, cmd.name, subcmd.to_address);
-                // Implement logic for 'wallet send' command here
-            }
-        }
+        // import wallet command implementation from wallet.rs
+        Commands::Wallet(wallet_cmd) => handle_wallet_cmd(wallet_cmd),
     }
 }

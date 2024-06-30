@@ -10,10 +10,11 @@ hex = "0.4"
 rand = "0.8"
 leveldb = "0.8"
 
-secp256k1 = { version = "0.29.0", features = ["rand", "rand-std", "serde"] }
+secp256k1 = { version = "0.29.0", features = ["rand", "rand-std", "hashes", "serde"] }
 
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+bincode = "1.0.1"
 
 chrono = { version = "0.4", features = ["serde"] }
 clap = { version = "4.5.8", features = ["derive"] }
